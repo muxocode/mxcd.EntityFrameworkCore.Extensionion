@@ -9,3 +9,5 @@
 /test/dataSample/obj
 /test/sample.test/bin/Debug/netcoreapp3.0
 /test/sample.test/obj
+/test/sample.test/bin/Release/netcoreapp3.0
+/test/dataSample/bin/Release/netcoreapp3.0

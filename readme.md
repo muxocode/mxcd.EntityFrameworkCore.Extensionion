@@ -38,7 +38,26 @@ using (var context = new SampleContext())
 {
     ...
 
-    context.Update<Customer>(new { FirstName = "Prueba" });
+    context.Update(new { OrderNumber = "Prueba" }, (Order o) => 1 == 1);
+    context.Remove<Product>();
+
+    ...
+
+    context.SaveChanges();
+}
+```
+#### Example3
+```csharp
+///Remove&Update All 
+using (var context = new SampleContext())
+{
+    ...
+    var data = new Customer()
+    {
+    ...
+    };
+
+    context.Update<Customer>(data);
     context.Remove<Product>();
 
     ...

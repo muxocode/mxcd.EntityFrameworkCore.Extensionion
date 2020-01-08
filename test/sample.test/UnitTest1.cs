@@ -115,5 +115,46 @@ namespace sample.test
                 Assert.True(!products.Any());
             }
         }
+
+        [Fact]
+        public void NoExpression()
+        {
+            ///UPDATE
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Update(new { OrderNumber = "Prueba" }, (Order o) => 1 == 1);
+
+                context.SaveChanges();
+            }
+
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Order.ToList().ForEach(x =>
+                {
+                    Assert.True(x.OrderNumber == "Prueba");
+                });
+            }
+
+            //DELETE
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Remove<Supplier>();
+
+                context.SaveChanges();
+            }
+
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                Assert.True(!context.Supplier.Any());
+            }
+        }
     }
 }

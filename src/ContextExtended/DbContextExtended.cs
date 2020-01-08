@@ -99,7 +99,7 @@ namespace mxcd.dbContextExtended
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <param name="expr">filter</param>
-        public void Remove<T>(Expression<Func<T, bool>> expr) where T : class
+        public void Remove<T>(Expression<Func<T, bool>> expr = null) where T : class
         {
             var data = GetTableData<T>();
             var query = linqToSql.From(data.Table, data.Schema).Where(expr).Delete();
@@ -127,7 +127,7 @@ namespace mxcd.dbContextExtended
         /// <typeparam name="TUpdate">Type of update</typeparam>
         /// <param name="obj">Entity value for update</param>
         /// <param name="expr">filter</param>
-        public void Update<T, TUpdate>(TUpdate obj, Expression<Func<T, bool>> expr = null) where T : class where TUpdate : class
+        public void Update<T, TUpdate>(TUpdate obj, Expression<Func<T, bool>> expr) where T : class where TUpdate : class
         {
             var data = GetTableData<T>();
             var query = linqToSql.From(data.Table, data.Schema).Where(expr).Update(obj);
