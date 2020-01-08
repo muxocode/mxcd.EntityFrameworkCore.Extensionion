@@ -38,7 +38,7 @@ using (var context = new SampleContext())
 {
     ...
 
-    context.Update(new { OrderNumber = "Prueba" }, (Order o) => 1 == 1);
+    context.Update(new { OrderNumber = "Prueba" }, (OrderItem o) => 1 == 1);
     context.Remove<Product>();
 
     ...
