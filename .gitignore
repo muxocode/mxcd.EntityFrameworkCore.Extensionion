@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs
+/src/ContextExtended/bin
+/src/ContextExtended/obj
+/test/dataSample/bin/Debug/netcoreapp3.0
+/test/dataSample/obj
+/test/sample.test/bin/Debug/netcoreapp3.0
+/test/sample.test/obj

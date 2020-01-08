@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>mxcd.dbContextExtended</name>
+    </assembly>
+    <members>
+        <member name="T:mxcd.dbContextExtended.DbContextExtended">
+            <summary>
+            Context extended
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.#ctor">
+            <summary>
+            Ctor
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.SaveChanges(System.Boolean)">
+            <summary>
+            SaveChanges
+            </summary>
+            <param name="acceptAllChangesOnSuccess"></param>
+            <returns></returns>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.SaveChangesAsync(System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            SaveChangesAsync
+            </summary>
+            <param name="acceptAllChangesOnSuccess"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.Remove``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Remove de database entities with a expression and a given data (anonymous type permited)
+            This method not removes de session entities, for this propouse use context.ChangeTracker.Entries...
+            This method will executed on SaveChanges 
+            </summary>
+            <typeparam name="T">Type</typeparam>
+            <param name="expr">filter</param>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.Update``2(``1,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Update the database entities with a expression and a given data (anonymous type permited)
+            This method not updates de session entities, for this propouse use context.ChangeTracker.Entries...
+            This method will executed on SaveChanges
+            </summary>
+            <typeparam name="T">Type</typeparam>
+            <typeparam name="TUpdate">Type of update</typeparam>
+            <param name="obj">Entity value for update</param>
+            <param name="expr">filter</param>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.DisposeAsync">
+            <summary>
+            Dispose
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:mxcd.dbContextExtended.exception.DbContextExtendedException">
+            <summary>
+            Exception on DbContextExtended
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.exception.DbContextExtendedException.#ctor(System.String,System.Exception,Microsoft.Extensions.Logging.ILogger{System.Exception})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="message">message</param>
+            <param name="oEx">exception</param>
+            <param name="logger">logger</param>
+        </member>
+    </members>
+</doc>
