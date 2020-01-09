@@ -144,7 +144,7 @@ namespace sample.test
             {
                 context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
 
-                context.Remove<Supplier>();
+                context.Remove<Order>();
 
                 context.SaveChanges();
             }
@@ -153,7 +153,7 @@ namespace sample.test
             {
                 context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
 
-                Assert.True(!context.Supplier.Any());
+                Assert.True(!context.Order.Any());
             }
         }
     }
