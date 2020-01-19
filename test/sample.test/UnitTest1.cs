@@ -143,7 +143,7 @@ namespace sample.test
             using (var context = new SampleContext())
             {
                 context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
-
+                
                 context.Remove<Order>();
 
                 context.SaveChanges();

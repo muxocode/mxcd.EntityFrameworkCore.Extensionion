@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Data.Common;
 using mxcd.dbContextExtended.exception;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace mxcd.dbContextExtended
 {
@@ -112,6 +114,7 @@ namespace mxcd.dbContextExtended
                         var command = c.CreateCommand();
                         command.CommandText = query;
                         command.ExecuteNonQuery();
+                        this.GetService<ILoggerProvider>()?.CreateLogger("").LogTrace(query);
                     }
                     catch (Exception oEx) { throw new DbContextExtendedException($"Error on remove: {query}", oEx); }
                 },
@@ -141,6 +144,7 @@ namespace mxcd.dbContextExtended
                         var command = c.CreateCommand();
                         command.CommandText = query;
                         command.ExecuteNonQuery();
+                        this.GetService<ILogger>()?.LogTrace(query);
                     }
                     catch (Exception oEx) { throw new DbContextExtendedException($"Error on update: {query}", oEx); }
                 },
@@ -184,6 +188,33 @@ namespace mxcd.dbContextExtended
         {
             actions.Clear();
             return base.DisposeAsync();
+        }
+        /// <summary>
+        /// DiscardChanges
+        /// </summary>
+        public void DiscardChanges()
+        {
+            foreach (var entry in this.ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified; //Revert changes made to deleted entity.
+                        entry.State = EntityState.Unchanged;
+                        break;
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                }
+            }
+        }
+        /// <summary>
+        /// Async DiscardChanges
+        /// </summary>
+        public Task DiscardChangesAsync()
+        {
+            return Task.Run(this.DiscardChanges);
         }
     }
 }

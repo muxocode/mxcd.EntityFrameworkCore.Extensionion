@@ -66,6 +66,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.DiscardChanges">
+            <summary>
+            DiscardChanges
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.DiscardChangesAsync">
+            <summary>
+            Async DiscardChanges
+            </summary>
+        </member>
         <member name="T:mxcd.dbContextExtended.exception.DbContextExtendedException">
             <summary>
             Exception on DbContextExtended
