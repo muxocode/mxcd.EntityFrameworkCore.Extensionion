@@ -71,7 +71,17 @@
             DiscardChanges
             </summary>
         </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.DiscardChanges``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            DiscardChanges
+            </summary>
+        </member>
         <member name="M:mxcd.dbContextExtended.DbContextExtended.DiscardChangesAsync">
+            <summary>
+            Async DiscardChanges
+            </summary>
+        </member>
+        <member name="M:mxcd.dbContextExtended.DbContextExtended.DiscardChangesAsync``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
             <summary>
             Async DiscardChanges
             </summary>

@@ -100,7 +100,6 @@ namespace sample.test
             using (var context = new SampleContext())
             {
                 context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
-                var products = context.Product.ToList();
 
                 context.Remove(expr);
 
@@ -114,6 +113,7 @@ namespace sample.test
 
                 Assert.True(!products.Any());
             }
+
         }
 
         [Fact]
@@ -154,6 +154,40 @@ namespace sample.test
                 context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
 
                 Assert.True(!context.Order.Any());
+            }
+        }
+
+        [Fact]
+        public void DiscardChanges()
+        {
+            int n = 0;
+            ///UPDATE
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Update(new { City = "Prueba" }, (Supplier o) => 1 == 1);
+                var entity = context.Supplier.First();
+                entity.City = "Prueba";
+                n = context.Supplier.Count();
+
+                context.Add(new Supplier() { Id = 9999 });
+
+                context.DiscardChanges();
+
+                context.SaveChanges();
+            }
+
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Supplier.ToList().ForEach(x =>
+                {
+                    Assert.True(x.City != "Prueba");
+                });
+
+                Assert.True(context.Supplier.Count() == n);
             }
         }
     }

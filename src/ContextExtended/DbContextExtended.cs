@@ -114,7 +114,6 @@ namespace mxcd.dbContextExtended
                         var command = c.CreateCommand();
                         command.CommandText = query;
                         command.ExecuteNonQuery();
-                        this.GetService<ILoggerProvider>()?.CreateLogger("").LogTrace(query);
                     }
                     catch (Exception oEx) { throw new DbContextExtendedException($"Error on remove: {query}", oEx); }
                 },
@@ -144,7 +143,6 @@ namespace mxcd.dbContextExtended
                         var command = c.CreateCommand();
                         command.CommandText = query;
                         command.ExecuteNonQuery();
-                        this.GetService<ILogger>()?.LogTrace(query);
                     }
                     catch (Exception oEx) { throw new DbContextExtendedException($"Error on update: {query}", oEx); }
                 },
@@ -194,6 +192,8 @@ namespace mxcd.dbContextExtended
         /// </summary>
         public void DiscardChanges()
         {
+            actions.Clear();
+
             foreach (var entry in this.ChangeTracker.Entries())
             {
                 switch (entry.State)
@@ -210,11 +210,45 @@ namespace mxcd.dbContextExtended
             }
         }
         /// <summary>
+        /// DiscardChanges
+        /// </summary>
+        public void DiscardChanges<T>(Expression<Func<T, bool>> filter = null) where T : class
+        {
+            actions.Clear();
+
+            var entries = this.ChangeTracker.Entries<T>();
+            if (filter != null)
+            {
+                entries = entries.Where(x => filter.Compile()(x.Entity));
+            }
+            foreach (var entry in entries)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Modified:
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.State = EntityState.Unchanged;
+                        break;
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                }
+            }
+        }
+        /// <summary>
         /// Async DiscardChanges
         /// </summary>
         public Task DiscardChangesAsync()
         {
             return Task.Run(this.DiscardChanges);
+        }
+        /// <summary>
+        /// Async DiscardChanges
+        /// </summary>
+        public Task DiscardChangesAsync<T>(Expression<Func<T, bool>> filter = null) where T : class
+        {
+            return Task.Run(()=>this.DiscardChanges<T>(filter));
         }
     }
 }
