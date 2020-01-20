@@ -10,7 +10,7 @@
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/muxocode/mxcd.EntityFrameworkCore.Extensionion</PackageProjectUrl>
     <PackageIconUrl>https://muxocode.com/icon.png</PackageIconUrl>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <PackageTags>muxocode mxcd EntityFramework Core</PackageTags>
     <Copyright>MuxoCode</Copyright>
     <Description>Update &amp; Delete with expression for entity framework core</Description>

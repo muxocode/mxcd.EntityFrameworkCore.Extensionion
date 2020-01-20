@@ -187,35 +187,30 @@ namespace mxcd.dbContextExtended
             actions.Clear();
             return base.DisposeAsync();
         }
-        /// <summary>
-        /// DiscardChanges
-        /// </summary>
-        public void DiscardChanges()
-        {
-            actions.Clear();
 
+        private IEnumerable<Task> GetDiscardTask()
+        {
             foreach (var entry in this.ChangeTracker.Entries())
             {
-                switch (entry.State)
+                yield return Task.Run(() =>
                 {
-                    case EntityState.Modified:
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Modified; //Revert changes made to deleted entity.
-                        entry.State = EntityState.Unchanged;
-                        break;
-                    case EntityState.Added:
-                        entry.State = EntityState.Detached;
-                        break;
-                }
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified; //Revert changes made to deleted entity.
+                            entry.State = EntityState.Unchanged;
+                            break;
+                        case EntityState.Added:
+                            entry.State = EntityState.Detached;
+                            break;
+                    }
+                });
             }
         }
-        /// <summary>
-        /// DiscardChanges
-        /// </summary>
-        public void DiscardChanges<T>(Expression<Func<T, bool>> filter = null) where T : class
-        {
-            actions.Clear();
 
+        private IEnumerable<Task> GetDiscardTask<T>(Expression<Func<T, bool>> filter = null) where T : class
+        {
             var entries = this.ChangeTracker.Entries<T>();
             if (filter != null)
             {
@@ -223,32 +218,54 @@ namespace mxcd.dbContextExtended
             }
             foreach (var entry in entries)
             {
-                switch (entry.State)
+                yield return Task.Run(() =>
                 {
-                    case EntityState.Modified:
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Modified;
-                        entry.State = EntityState.Unchanged;
-                        break;
-                    case EntityState.Added:
-                        entry.State = EntityState.Detached;
-                        break;
-                }
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified; //Revert changes made to deleted entity.
+                            entry.State = EntityState.Unchanged;
+                            break;
+                        case EntityState.Added:
+                            entry.State = EntityState.Detached;
+                            break;
+                    }
+                });
             }
+        }
+
+        /// <summary>
+        /// DiscardChanges
+        /// </summary>
+        public void DiscardChanges()
+        {
+            Task.WaitAll(this.DiscardChangesAsync());
+        }
+        /// <summary>
+        /// DiscardChanges
+        /// </summary>
+        public void DiscardChanges<T>(Expression<Func<T, bool>> filter = null) where T : class
+        {
+            Task.WaitAll(this.DiscardChangesAsync<T>(filter));
         }
         /// <summary>
         /// Async DiscardChanges
         /// </summary>
         public Task DiscardChangesAsync()
         {
-            return Task.Run(this.DiscardChanges);
+            actions.Clear();
+
+            return Task.WhenAll(GetDiscardTask().ToArray());
         }
         /// <summary>
         /// Async DiscardChanges
         /// </summary>
         public Task DiscardChangesAsync<T>(Expression<Func<T, bool>> filter = null) where T : class
         {
-            return Task.Run(()=>this.DiscardChanges<T>(filter));
+            actions.Clear();
+
+            return Task.WhenAll(GetDiscardTask<T>(filter).ToArray());
         }
     }
 }

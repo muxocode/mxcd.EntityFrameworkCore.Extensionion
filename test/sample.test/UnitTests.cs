@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace sample.test
@@ -43,10 +44,10 @@ namespace sample.test
         }
     }
 
-    public class UnitTest1
+    public class UnitTests
     {
 
-        public UnitTest1()
+        public UnitTests()
         {
             using (var context = new SampleContext())
             {
@@ -174,6 +175,40 @@ namespace sample.test
                 context.Add(new Supplier() { Id = 9999 });
 
                 context.DiscardChanges();
+
+                context.SaveChanges();
+            }
+
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Supplier.ToList().ForEach(x =>
+                {
+                    Assert.True(x.City != "Prueba");
+                });
+
+                Assert.True(context.Supplier.Count() == n);
+            }
+        }
+
+        [Fact]
+        public async Task DiscardChangesAsync()
+        {
+            int n = 0;
+            ///UPDATE
+            using (var context = new SampleContext())
+            {
+                context.GetService<ILoggerFactory>().AddProvider(new MyEntityLoggerProvider());
+
+                context.Update(new { City = "Prueba" }, (Supplier o) => 1 == 1);
+                var entity = context.Supplier.First();
+                entity.City = "Prueba";
+                n = context.Supplier.Count();
+
+                context.Add(new Supplier() { Id = 9999 });
+
+                await context.DiscardChangesAsync();
 
                 context.SaveChanges();
             }
