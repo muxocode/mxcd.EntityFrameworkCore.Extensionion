@@ -34,7 +34,7 @@ namespace dataSample.Models
                 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder
                     .UseLoggerFactory(MyLoggerFactory) // Warning: Do not create a new ILoggerFactory instance each time
-                    .UseSqlServer("Data Source=28APO4166\\SQL17;Initial Catalog=Sample;Integrated Security=True");
+                    .UseSqlServer("Data Source=localhost;Initial Catalog=Sample;Integrated Security=True");
             }
         }
 

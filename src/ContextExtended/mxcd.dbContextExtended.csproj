@@ -10,7 +10,7 @@
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/muxocode/mxcd.EntityFrameworkCore.Extensionion</PackageProjectUrl>
     <PackageIconUrl>https://muxocode.com/icon.png</PackageIconUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <PackageTags>muxocode mxcd EntityFramework Core</PackageTags>
     <Copyright>MuxoCode</Copyright>
     <Description>Update &amp; Delete with expression for entity framework core</Description>
@@ -19,7 +19,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-    <PackageReference Include="mxcd.linqToSql" Version="1.0.4" />
+    <PackageReference Include="mxcd.linqToSql" Version="1.0.5" />
     <PackageReference Include="mxcd.util" Version="1.2.2" />
   </ItemGroup>
 
